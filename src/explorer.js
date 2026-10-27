@@ -23,7 +23,9 @@ export async function initExplorer() {
  const status=document.querySelector('#explorer-status'), slider=document.querySelector('#jacobi'), sweep=document.querySelector('#sweep');
  try {
   const testCanvas=document.createElement('canvas');
-  if(!testCanvas.getContext('webgl2') && !testCanvas.getContext('webgl')) throw new Error('This browser does not support WebGL.');
+  const context=testCanvas.getContext('webgl2')||testCanvas.getContext('webgl');
+  if(!context) throw new Error('This browser does not support WebGL.');
+  context.getExtension('WEBGL_lose_context')?.loseContext();
   const [frames]=await Promise.all([(async()=>{
    const response=await fetch('/assets/preview_frames.dat');
    if(!response.ok) throw new Error('The surface data could not load.');
@@ -70,7 +72,8 @@ export async function initExplorer() {
    if(playing) timer=setTimeout(tick,180);
   }
   slider.oninput=()=>{stop();update(Number(slider.value));};
-  sweep.onclick=()=>{if(playing)stop();else{playing=true;sweep.innerHTML='Pause energy sweep <span>Ⅱ</span>';tick();}};
+  sweep.onclick=()=>{if(playing)stop();else{playing=true;sweep.innerHTML='Pause energy sweep <span>II</span>';tick();}};
+  new IntersectionObserver(entries=>{if(!entries[0].isIntersecting)stop();}).observe(document.querySelector('.zvs-views'));
   document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});
   matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change',e=>{if(e.matches)stop();});
   slider.disabled=false;sweep.disabled=false;describe(frames[80]);

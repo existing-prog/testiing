@@ -1,22 +1,23 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Samantha Ramsey — aerospace engineering, trans-Neptunian dynamics, CR3BP research, and interactive Sun–Neptune zero-velocity surfaces.">
-  <title>Samantha Ramsey — Astrodynamics & outer Solar System research</title>
-  <link rel="stylesheet" href="/style.css">
-  <link rel="stylesheet" href="/vendor/katex/katex.min.css">
-  <script type="module" src="/app.js"></script>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <!-- PAGE_METADATA -->
+ <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+ <link rel="stylesheet" href="/style.css">
+ <link rel="stylesheet" href="/space.css">
+ <script type="module" src="/app.js"></script>
 </head>
 <body>
-  <a class="skip" href="#main">Skip to content</a>
-  <header>
-    <a class="brand" href="/" aria-label="Orbital home"><span class="brand-mark">✳</span> orbital<span class="brand-dot">.</span></a>
-    <nav aria-label="Main navigation"><a href="/" data-route="/">Overview</a><a href="/journal" data-route="/journal">Research journal</a><a href="/simulations" data-route="/simulations">Simulations <span>↗</span></a></nav>
-    <span class="header-note"><i></i> EXPLORING WHAT’S NEXT</span>
-  </header>
-  <main id="main"></main>
-  <footer><a class="brand" href="/">orbital.</a><span>Samantha Ramsey · Outer Solar System dynamics</span><span>EARTH, SOL SYSTEM <span class="lime">↗</span></span><span class="source-note">Research content, figures, and surface data adapted from <a href="https://samantharamsey.github.io/tno-dynamics/">Samantha Ramsey’s TNO Dynamics</a>. <a href="https://github.com/samantharamsey/tno-dynamics">Original research code ↗</a></span></footer>
+ <div class="starfield" aria-hidden="true"></div>
+ <a class="skip" href="#main">Skip to content</a>
+ <header>
+  <a class="brand" href="/" aria-label="Orbital home"><span class="brand-mark" aria-hidden="true">✳︎</span> orbital<span class="brand-dot">.</span></a>
+  <nav aria-label="Main navigation"><a href="/" data-route="/">Overview</a><a href="/journal" data-route="/journal">Research journal</a><a href="/simulations" data-route="/simulations">Simulations</a><a href="/publications" data-route="/publications">Publications</a></nav>
+  <button type="button" id="ambient-motion" class="motion-toggle" aria-pressed="false" hidden>Play ambient motion</button>
+ </header>
+ <main id="main"><!-- PAGE_CONTENT --></main>
+ <footer><a class="brand" href="/">orbital.</a><span>Samantha Ramsey · Outer Solar System dynamics</span><span>EARTH, SOL SYSTEM <span class="lime" aria-hidden="true">→</span></span><span class="source-note">Research content, figures, and surface data adapted from <a href="https://samantharamsey.github.io/tno-dynamics/">Samantha Ramsey’s TNO Dynamics</a>. <a href="https://github.com/samantharamsey/tno-dynamics">Original research code →</a> · <a href="/publications">Publications & papers</a></span></footer>
 </body>
 </html>

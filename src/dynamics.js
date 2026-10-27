@@ -42,3 +42,15 @@ export function parseBank(buffer) {
  if(offset!==buffer.byteLength || count!==161) throw new Error('Incomplete surface bank');
  return frames;
 }
+
+// Ideal outward Hohmann transfer, normalized to r1 = GM = 1.
+export function hohmann(radius) {
+ if(!Number.isFinite(radius)||radius<1)throw new RangeError('Outer radius must be at least 1');
+ const a=(1+radius)/2,e=(radius-1)/(radius+1);
+ return {a,e,b:a*Math.sqrt(1-e*e),deltaV:Math.sqrt(2*radius/(1+radius))-1+Math.sqrt(1/radius)*(1-Math.sqrt(2/(1+radius))),periodFraction:Math.pow(a,1.5)/2};
+}
+export function eccentricAnomaly(mean,e) {
+ let E=mean;
+ for(let i=0;i<12;i++)E-=(E-e*Math.sin(E)-mean)/(1-e*Math.cos(E));
+ return E;
+}

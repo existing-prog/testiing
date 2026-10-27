@@ -20,3 +20,9 @@ The precomputed meshes are coarse moving-preview frames. The original Python/Das
 - KaTeX **0.19.1**: math HTML generated at authoring time, local CSS and fonts in `src/vendor/katex/`; MIT license in `src/vendor/KATEX-LICENSE`.
 
 Content conversion used Marked at authoring time. No conversion tools are needed to run the site. The original two-body animation and the portfolio design are separate from the sourced TNO material.
+
+## Presentation and performance additions
+
+The dedicated publications library in `src/publications.js` follows the same source bibliography. No new paper URLs, PDFs, abstracts, or DOIs have been invented. Responsive WebP derivatives of the original figures preserve the source figures and are used for delivery; original PNGs remain in the repository.
+
+The new reference-frame/L4 schematic and normalized Hohmann-transfer animation are educational illustrations authored for this portfolio. They are not additional results attributed to the source research. Their assumptions and normalized units appear alongside the controls. The nebula/starfield presentation and social-sharing card are also portfolio additions.

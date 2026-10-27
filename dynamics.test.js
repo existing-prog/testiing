@@ -2,7 +2,21 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { gunzipSync } from 'node:zlib';
-import { mu, L1, L2, C1, C2, potential, gradientX, sliderToC, parseBank } from './src/dynamics.js';
+import { mu, L1, L2, C1, C2, potential, gradientX, sliderToC, parseBank, hohmann, eccentricAnomaly } from './src/dynamics.js';
+
+test('educational transfer geometry meets both circular orbits and Kepler time-of-flight',()=>{
+ const {a,e,deltaV,periodFraction}=hohmann(1.52);
+ assert.ok(Math.abs(a*(1-e)-1)<1e-12);
+ assert.ok(Math.abs(a*(1+e)-1.52)<1e-12);
+ assert.ok(deltaV>0 && deltaV<.2);
+ assert.ok(Math.abs(periodFraction-.5*Math.pow(1.26,1.5))<1e-12);
+ assert.equal(hohmann(1).deltaV,0);
+ assert.throws(()=>hohmann(.5),RangeError);
+ for(const eccentricity of [0,.4,.8])for(const mean of [0,.2,Math.PI,6]){
+  const E=eccentricAnomaly(mean,eccentricity);
+  assert.ok(Math.abs(E-eccentricity*Math.sin(E)-mean)<1e-12);
+ }
+});
 
 test('Sun–Neptune equilibria satisfy the force balance and critical Jacobi values', () => {
  assert.ok(Math.abs(mu-5.1485534120890236e-5)<1e-12);
