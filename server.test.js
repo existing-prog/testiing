@@ -18,7 +18,7 @@ test('all portfolio routes return the application shell', async () => {
   }
 });
 test('application assets are available with correct types', async () => {
-  for (const [asset, type] of [['app.js','text/javascript'], ['style.css','text/css']]) {
+  for (const [asset, type] of [['app.js','text/javascript'], ['style.css','text/css'], ['content/research.html','text/html'], ['assets/preview_frames.dat','application/octet-stream'], ['assets/research/equilibrium-points-planar.png','image/png'], ['vendor/plotly-gl3d.min.js','text/javascript']]) {
     const response = await fetch(`${base}/${asset}`);
     assert.equal(response.status, 200);
     assert.ok(response.headers.get('content-type').startsWith(type));
