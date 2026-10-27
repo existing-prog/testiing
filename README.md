@@ -1,4 +1,4 @@
-# Orbital — Samantha Ramsey
+# Samantha Ramsey — Academic Portfolio
 
 A space-themed aerospace engineering portfolio adapted from [Samantha Ramsey’s TNO Dynamics site](https://samantharamsey.github.io/tno-dynamics/): full CV, publications library, research journal, and interactive astrodynamics demonstrations.
 

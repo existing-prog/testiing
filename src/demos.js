@@ -46,9 +46,8 @@ export function initDemos() {
   line(ctx,[A,L,B,A],'#b5b6ff66',[4,5]);
   dot(ctx,...A,9,'#f2ca87','Primary 1');dot(ctx,...B,6,'#8dacf5','Primary 2');dot(ctx,...L,4,'#d9b2ff','L₄');
   ctx.fillStyle='#d5def1';ctx.font='15px monospace';ctx.fillText('+',cx-4,cy+5);
-  ctx.fillStyle='#aab8dc';ctx.font='12px system-ui';ctx.fillText(select.value==='rotating'?'CO-ROTATING FRAME':'INERTIAL FRAME',20,h-25);
  });
- select.onchange=()=>frame.render();bindToggle(frame,document.querySelector('[data-canvas="frame-canvas"]'),'frame animation');
+ select.onchange=()=>{document.querySelector('#frame-label').textContent=select.value==='rotating'?'Co-rotating frame':'Inertial frame';frame.render();};bindToggle(frame,document.querySelector('[data-canvas="frame-canvas"]'),'frame animation');
  const radius=document.querySelector('#transfer-radius');
  const transfer=canvasPlayer(document.querySelector('#transfer-canvas'),(ctx,w,h,t)=>{
   const r=Number(radius.value),{a,e,b}=hohmann(r),scale=Math.min(w,h)*.38/r,cx=w/2,cy=h/2;

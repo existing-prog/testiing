@@ -32,7 +32,7 @@ export async function renderPage(route, origin='') {
  <meta name="author" content="Samantha Ramsey">
  <meta name="theme-color" content="#070717">
  <meta property="og:type" content="website">
- <meta property="og:site_name" content="Samantha Ramsey · Orbital">
+ <meta property="og:site_name" content="Samantha Ramsey · Academic Portfolio">
  <meta property="og:locale" content="en_US">
  <meta property="og:title" content="${escapeHTML(meta.title)}">
  <meta property="og:description" content="${escapeHTML(meta.description)}">
