@@ -16,7 +16,7 @@ Open `http://localhost:3000` in a browser. `PORT` overrides the port. Stop with 
 npm test
 ```
 
-Nine tests cover server-rendered content, page metadata and structured data, sitemap/robots behavior, compression, conditional caching, HTTP methods and redirects, scientific equilibrium and surface checks, and educational transfer equations.
+Ten tests cover server-rendered content, page metadata and structured data, sitemap/robots behavior, compression, conditional caching, HTTP methods and redirects, scientific equilibrium and surface checks, and educational transfer equations.
 
 ## Pages
 
@@ -40,7 +40,7 @@ Place the corresponding author-approved PDF in `src/assets/papers/`. Local PDFs 
 
 ## Production SEO
 
-Use a Node-capable host and start the server with `npm start`. Configure **`SITE_URL` to the actual public website origin**, for example `https://your-domain.com`, with no path/query/fragment. Do not use the reference site’s domain unless this application is actually deployed there.
+For a Node-capable host, start the server with `npm start`. Configure **`SITE_URL` to the actual public website origin**, for example `https://your-domain.com`, with no path/query/fragment. Do not use the reference site’s domain unless this application is actually deployed there.
 
 Once configured, the server provides:
 
@@ -51,7 +51,7 @@ Once configured, the server provides:
 - `/sitemap.xml` with all four public routes and `/robots.txt` advertising it.
 - Redirects from trailing-slash variants and `/index.html` to preferred page URLs.
 
-Without `SITE_URL`, pages still run and remain readable/indexable, but absolute canonical/share URLs are omitted and the sitemap returns an explanatory 503. This prevents publishing a made-up or localhost domain. The host must serve the Node server: `src/index.html` is a rendering template, not a standalone static site. Search ranking/indexing and real-world Core Web Vitals require deployment measurements; these code changes do not guarantee a ranking.
+Without `SITE_URL`, pages still run and remain readable/indexable, but absolute canonical/share URLs are omitted and the sitemap returns an explanatory 503. This prevents publishing a made-up or localhost domain. For Node hosting, serve the Node server. For GitHub Pages or other static hosting, use the export below; do not publish the repository root or the raw `src/index.html` template. Search ranking/indexing and real-world Core Web Vitals require deployment measurements; these code changes do not guarantee a ranking.
 
 After deployment, verify the public origin and sitemap, then submit the sitemap through Google Search Console/Bing Webmaster Tools if desired. Their ownership verification and submission are account actions, not performed by this project.
 
@@ -85,3 +85,19 @@ Zero-velocity surfaces describe energetic accessibility, not trajectories or gua
 Research mathematics was prerendered with KaTeX 0.19.1. Keep accessible MathML and visual HTML together when editing. See `SOURCES.md` for provenance and vendor licenses.
 
 The Neptune illustration uses soft cloud features moving across a projected spherical surface under fixed lighting, rather than artificial atmospheric stripes. Triton moves retrograde; the three moon paths have distinct illustrative projected tilts. Their orientations, distances, and animation speeds do not reproduce measured inclinations or ephemerides.
+
+## GitHub Pages deployment
+
+The repository includes `.github/workflows/pages.yml`. It tests and builds the site, then deploys the generated `dist/` artifact to GitHub Pages after pushes to `main`.
+
+One-time GitHub setting: **Repository → Settings → Pages → Build and deployment → Source → GitHub Actions**. Then run **Actions → Deploy academic portfolio to GitHub Pages → Run workflow**, or push to `main`. The public site is https://existing-prog.github.io/testiing/ . The environment must allow the `main` branch to deploy to `github-pages`.
+
+The workflow gets the actual public URL from GitHub’s Pages configuration. Assets, navigation, canonical URLs, structured data, and the sitemap support the repository subpath. All four pages are generated as real HTML directories, so direct links and reloads work without a Node runtime. Dynamic import URLs and the 3D mesh/Plotly URLs resolve relative to their JavaScript modules.
+
+Build manually with:
+
+```sh
+npm run build
+```
+
+Output is `dist/` (ignored by Git). The default target is `https://existing-prog.github.io/testiing/`; `PUBLIC_SITE_URL` overrides it, including a project path or custom domain. Publish the **contents of `dist/`**, not `src/` or the repository root. A `.nojekyll` file prevents unintended Jekyll processing. GitHub Pages controls compression and cache headers in production; the Node server’s header logic is not executed there. A project-level `robots.txt` cannot set the host-wide robots policy, but the project sitemap is available at `/testiing/sitemap.xml`.

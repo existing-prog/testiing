@@ -2,7 +2,7 @@ import { mu, L1, L2, C1, C2, parseBank } from './dynamics.js';
 function loadPlotly() {
  return new Promise((resolve,reject)=>{
   const script=document.createElement('script');
-  script.src='/vendor/plotly-gl3d.min.js';
+  script.src=new URL('./vendor/plotly-gl3d.min.js',import.meta.url).href;
   script.onload=resolve;script.onerror=()=>reject(new Error('The 3D renderer could not load.'));
   document.head.append(script);
  });
@@ -27,7 +27,7 @@ export async function initExplorer() {
   if(!context) throw new Error('This browser does not support WebGL.');
   context.getExtension('WEBGL_lose_context')?.loseContext();
   const [frames]=await Promise.all([(async()=>{
-   const response=await fetch('/assets/preview_frames.dat');
+   const response=await fetch(new URL('./assets/preview_frames.dat',import.meta.url));
    if(!response.ok) throw new Error('The surface data could not load.');
    const stream=response.body.pipeThrough(new DecompressionStream('gzip'));
    return parseBank(await new Response(stream).arrayBuffer());
