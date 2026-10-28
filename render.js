@@ -1,7 +1,9 @@
 import { readFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { overview, journal, simulations } from './src/views.js';
 import { publicationsPage, publications, escapeHTML } from './src/publications.js';
 const root = new URL('./src/', import.meta.url);
+const socialCardVersion=createHash('sha256').update(await readFile(new URL('assets/social-card.png',root))).digest('hex').slice(0,12);
 export const pages = {
  '/': {title:'Samantha Ramsey | Astrodynamics & Celestial Mechanics Research', description:'Explore Samantha Ramsey’s research in trans-Neptunian dynamics, aerospace engineering experience, publications, and interactive orbital mechanics demonstrations.'},
  '/journal': {title:'CR3BP Research Journal | Samantha Ramsey', description:'Derivations, reference frames, Jacobi integral, zero-velocity geometry, and numerical verification for Sun–Neptune circular restricted three-body dynamics.'},
@@ -39,7 +41,7 @@ export async function renderPage(route, origin='') {
  <meta name="twitter:card" content="summary_large_image">
  <meta name="twitter:title" content="${escapeHTML(meta.title)}">
  <meta name="twitter:description" content="${escapeHTML(meta.description)}">
- ${canonical?`<link rel="canonical" href="${escapeHTML(canonical)}"><meta property="og:url" content="${escapeHTML(canonical)}"><meta property="og:image" content="${origin}/assets/social-card.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Samantha Ramsey — research beyond Neptune"><meta name="twitter:image" content="${origin}/assets/social-card.png">`:''}
+ ${canonical?`<link rel="canonical" href="${escapeHTML(canonical)}"><meta property="og:url" content="${escapeHTML(canonical)}"><meta property="og:image" content="${origin}/assets/social-card.png?v=${socialCardVersion}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Samantha Ramsey, Ph.D. candidate — Astrodynamics and Celestial Mechanics Research"><meta name="twitter:image" content="${origin}/assets/social-card.png?v=${socialCardVersion}"><meta name="twitter:image:alt" content="Samantha Ramsey, Ph.D. candidate — Astrodynamics and Celestial Mechanics Research">`:''}
  <script type="application/ld+json">${JSON.stringify(structuredData(route,origin)).replaceAll('<','\\u003c')}</script>
  ${route==='/journal'?'<link rel="stylesheet" href="/vendor/katex/katex.min.css">':''}`;
  let template=await readFile(new URL('index.html',root),'utf8');

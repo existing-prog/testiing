@@ -34,7 +34,8 @@ test('all four routes serve unique, indexable HTML without needing JavaScript', 
 test('production SEO uses the configured origin, correct schemas and all four sitemap URLs', async()=>{
   const html=await(await fetch(publicBase+'/publications')).text();
   assert.match(html,/<link rel="canonical" href="https:\/\/portfolio.example\/publications">/);
-  assert.match(html,/property="og:image"/);
+  assert.match(html,/property="og:image" content="https:\/\/portfolio.example\/assets\/social-card\.png\?v=[a-f0-9]{12}"/);
+  assert.match(html,/name="twitter:image:alt"/);
   const schema=JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]);
   assert.equal(schema['@graph'].filter(node=>node['@type']==='ScholarlyArticle').length,3);
   const sitemap=await(await fetch(publicBase+'/sitemap.xml')).text();
