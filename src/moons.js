@@ -1,5 +1,6 @@
 export function initMoons() {
  const scene=document.querySelector('.neptune-system'),moons=[...scene.querySelectorAll('.neptune-moon')];
+ const back=[...scene.querySelectorAll('.moon-paths-back path')],front=[...scene.querySelectorAll('.moon-paths-front path')],planet=scene.querySelector('.planet');
  let frame=0,last=null,time=0,visible=true;
  function render(timestamp) {
   frame=0;
@@ -7,9 +8,14 @@ export function initMoons() {
   if(active&&last!==null)time+=Math.min((timestamp-last)/1000,.08);
   last=active?timestamp:null;
   const size=Math.min(scene.clientWidth/540,scene.clientHeight/500);
+  const cx=scene.clientWidth/2,cy=scene.clientHeight*.48;
+  planet.style.setProperty('--cloud-offset',`${(time*1.8)%100}%`);
+  scene.querySelectorAll('.moon-paths').forEach(svg=>svg.setAttribute('viewBox',`0 0 ${scene.clientWidth} ${scene.clientHeight}`));
   moons.forEach((moon,i)=>{
-   const angle=time*[.42,-.28,.18][i]+[.2,2.5,4.5][i],radius=[180,215,245][i]*size;
+   const angle=time*[-.42,.28,.18][i]+[.2,2.5,4.5][i],radius=[180,215,245][i]*size;
    const x=Math.cos(angle)*radius,y=Math.sin(angle)*radius*.42;
+   front[i].setAttribute('d',`M ${cx+radius} ${cy} A ${radius} ${radius*.42} 0 0 1 ${cx-radius} ${cy}`);
+   back[i].setAttribute('d',`M ${cx-radius} ${cy} A ${radius} ${radius*.42} 0 0 1 ${cx+radius} ${cy}`);
    moon.style.transform=`translate(calc(-50% + ${x}px),calc(-50% + ${y}px))`;
    moon.style.zIndex=Math.sin(angle)>0?'3':'1';
   });
