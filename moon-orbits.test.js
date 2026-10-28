@@ -1,5 +1,5 @@
 import {test} from 'node:test';import assert from 'node:assert/strict';
-import {moonElements,orbitalPosition,positionAtDay,projectPosition,logarithmicPosition,neptuneRadiusKm,displayPeriodSeconds,displayPositionAtSeconds,tritonOrbitSeconds,displayOrbitPosition} from './src/moon-orbits.js';
+import {moonElements,orbitalPosition,positionAtDay,projectPosition,logarithmicPosition,neptuneRadiusKm,displayPeriodSeconds,displayPositionAtSeconds,tritonOrbitSeconds,displayOrbitPosition,displaySemimajorAxis,displayPlanetRadius} from './src/moon-orbits.js';
 const distance=p=>Math.hypot(...p);
 test('each moon reaches the physical periapsis/apoapsis and repeats after its tabulated period',()=>{
  for(const orbit of moonElements){
@@ -29,7 +29,7 @@ test('logarithmic display compresses radii while preserving direction and depth'
  for(let i=0;i<3;i++)assert.ok(Math.abs(la[i]/distance(la)-a[i]/distance(a))<1e-12);
 });
 
-test('cubed-log display scales keep Triton at 15 seconds, preserve eccentricity and close each orbit',()=>{
+test('normalized powered-log distance and gentle log timing preserve planes, eccentricity and cycles',()=>{
  assert.equal(tritonOrbitSeconds,15);
  assert.equal(displayPeriodSeconds(moonElements[0]),15);
  const fastest=moonElements[3];
@@ -37,12 +37,21 @@ test('cubed-log display scales keep Triton at 15 seconds, preserve eccentricity 
  for(const orbit of moonElements){
   const seconds=displayPeriodSeconds(orbit);
   const reference=Math.min(...moonElements.map(m=>m.period));
-  assert.ok(Math.abs(seconds-15*(Math.log1p(orbit.period/reference)/Math.log1p(moonElements[0].period/reference))**3)<1e-12);
+  assert.ok(Math.abs(seconds-15*(Math.log1p(orbit.period/reference)/Math.log1p(moonElements[0].period/reference)))<1e-12);
   const a=positionAtDay(orbit,0),b=displayPositionAtSeconds(orbit,seconds);
   assert.ok(distance(a.map((value,i)=>value-b[i]))<1e-6);
   const peri=distance(displayOrbitPosition(orbit,orbitalPosition(orbit,0)));
   const apo=distance(displayOrbitPosition(orbit,orbitalPosition(orbit,Math.PI)));
   assert.ok(Math.abs(apo/peri-(1+orbit.e)/(1-orbit.e))<1e-12);
-  assert.ok(Math.abs((peri+apo)/2-Math.log1p(orbit.a/neptuneRadiusKm)**3)<1e-12);
+  assert.ok(Math.abs((peri+apo)/2-displaySemimajorAxis(orbit))<1e-12);
  }
+});
+
+test('larger compression power moves every moon inward without resizing Neptune or the view',()=>{
+ for(const orbit of moonElements){
+  assert.ok(displaySemimajorAxis(orbit,3)<displaySemimajorAxis(orbit,1));
+  assert.ok(displaySemimajorAxis(orbit,3)>displayPlanetRadius);
+  assert.ok(displaySemimajorAxis(orbit,3)<1);
+ }
+ assert.ok(displaySemimajorAxis(moonElements[0],3)<.65);
 });

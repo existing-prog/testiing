@@ -31,17 +31,24 @@ export function logarithmicPosition(position) {
 }
 
 export const tritonOrbitSeconds=15;
-// Scale each semimajor axis with a cubed logarithm, retaining its eccentricity and plane.
+// A fixed physical reference beyond Triton prevents the outer displayed moon
+// from being pinned at 1. View framing and planet size are independent of this map.
+export const distanceReferenceKm=1_000_000;
+export const displayPlanetRadius=.30;
+export function displaySemimajorAxis(orbit,power=3){
+ const u=Math.max(0,Math.min(1,Math.log(orbit.a/neptuneRadiusKm)/Math.log(distanceReferenceKm/neptuneRadiusKm)));
+ // Reserve a readable globe and clearance; power compresses the remaining gap.
+ return .38+.62*u**power;
+}
 export function displayOrbitPosition(orbit,position){
- const factor=Math.log1p(orbit.a/neptuneRadiusKm)**3/orbit.a;
+ const factor=displaySemimajorAxis(orbit)/orbit.a;
  return position.map(value=>value*factor);
 }
 
-// Cube the logarithmic period ratio using the shortest period as the reference;
-// Triton remains the 15-second anchor. These are display periods, not real-time ratios.
+// Gentle logarithmic timing; Triton remains at 15 seconds.
 export function displayPeriodSeconds(orbit){
  const reference=Math.min(...moonElements.map(moon=>moon.period));
- return tritonOrbitSeconds*(Math.log1p(orbit.period/reference)/Math.log1p(moonElements[0].period/reference))**3;
+ return tritonOrbitSeconds*Math.log1p(orbit.period/reference)/Math.log1p(moonElements[0].period/reference);
 }
 export function displayPositionAtSeconds(orbit,seconds){
  return orbitalPosition(orbit,rad(orbit.M)+2*Math.PI*seconds/displayPeriodSeconds(orbit));

@@ -1,4 +1,4 @@
-import {moonElements,neptuneRadiusKm,orbitalPosition,projectPosition,displayOrbitPosition,displayPositionAtSeconds} from './moon-orbits.js';
+import {moonElements,displayPlanetRadius,orbitalPosition,projectPosition,displayOrbitPosition,displayPositionAtSeconds} from './moon-orbits.js';
 // Two-body propagation of dated elements in one reference frame; not a live ephemeris.
 export function initMoons() {
  const scene=document.querySelector('.neptune-system'),moons=[...scene.querySelectorAll('.neptune-moon')];
@@ -11,12 +11,11 @@ export function initMoons() {
  function updateLayout(){
   const key=`${scene.clientWidth}:${scene.clientHeight}`;
   if(key===layout)return;layout=key;
-  const paths=samples;
-  const extent=Math.max(...paths.flat().map(([x,y])=>Math.max(Math.abs(x),Math.abs(y))));
-  pixelsPerLogUnit=Math.min(scene.clientWidth*.47,scene.clientHeight*.36)/extent;
+  // Fixed framing: do not fit the compressed outer orbit back to the edge.
+  pixelsPerLogUnit=Math.min(scene.clientWidth*.47,scene.clientHeight*.36);
   const cx=scene.clientWidth/2,cy=scene.clientHeight*.46;
   planet.style.top='46%';
-  const diameter=Math.max(12,2*Math.log(2)**3*pixelsPerLogUnit);
+  const diameter=Math.max(12,2*displayPlanetRadius*pixelsPerLogUnit);
   planet.style.width=diameter+'px';planet.style.height=diameter+'px';
   scene.querySelectorAll('.moon-paths').forEach(svg=>svg.setAttribute('viewBox',`0 0 ${scene.clientWidth} ${scene.clientHeight}`));
   samples.forEach((points,i)=>{

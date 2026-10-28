@@ -16,7 +16,7 @@ Open `http://localhost:3000` in a browser. `PORT` overrides the port. Stop with 
 npm test
 ```
 
-Fourteen tests cover server-rendered content, page metadata and structured data, sitemap/robots behavior, compression, conditional caching, HTTP methods and redirects, scientific equilibrium and surface checks, and educational transfer equations.
+Fifteen tests cover server-rendered content, page metadata and structured data, sitemap/robots behavior, compression, conditional caching, HTTP methods and redirects, scientific equilibrium and surface checks, and educational transfer equations.
 
 ## Pages
 
@@ -106,7 +106,9 @@ Output is `dist/` (ignored by Git). The default target is `https://existing-prog
 
 The hero continuously animates Triton, Proteus, Larissa, and Galatea using a consistent set of Ecliptic J2000 elements at JD 2447763.5 (1989-08-25). Elements come from CelestiaContent `data/solarsys.ssc` and `data/minormoons.ssc`, commit `e6d05411f1ab8aecbd8d72173711ae37f228deaf`. Triton uses the documented elliptical fallback. These dated two-body orbits are not a present-day ephemeris.
 
-Each orbit is uniformly resized to a logarithmic semimajor axis `[ln(1 + a / NeptuneRadius)]³`, preserving its eccentricity and 3D plane. Body markers are enlarged for visibility. Display periods use cubed logarithms too: `15 * [ln(1 + P/Pmin) / ln(1 + PTriton/Pmin)]³` seconds, with Galatea’s period as `Pmin`. Triton stays at 15 seconds; the logarithmic period ratio is cubed for every moon, so displayed period ratios are deliberately different from the physical ones. These are deliberately compressed display periods.
+Each orbit uses a normalized powered-log semimajor-axis map. With a fixed physical reference of 1,000,000 km, `u = clamp(ln(a/RNeptune) / ln(reference/RNeptune), 0, 1)`. The displayed semimajor axis is `0.38 + 0.62*u³` in fixed viewport units. Neptune has a fixed display radius of `0.30` units. The added clearance keeps the enlarged globe readable. Increasing the exponent moves every displayed moon inward because each normalized value is below 1, including Triton. The view is not auto-fitted afterward, which would undo the intended compression. Eccentricities and orbital planes are preserved by uniformly resizing each orbit.
+
+Periods return to gentle logarithmic scaling: `15 * ln(1 + P/Pmin) / ln(1 + PTriton/Pmin)` seconds. Triton remains at 15 seconds, and the inner moons are easier to track than with cubed periods. These are deliberately distorted display distances and periods; marker sizes are enlarged.
 
 The enlarged hero has no pause button, speed controls, or on-page model-details section. Only moon names and the logarithmic scale/body-marker caption remain. The hero runs independently of the ambient-background toggle and reduced-motion preferences, as explicitly requested; rendering suspends only while the document is hidden or the illustration is offscreen, resuming when visible. Research-demo controls elsewhere are unchanged.
 
