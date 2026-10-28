@@ -15,7 +15,7 @@ export function normalizeSiteUrl(value) {
  return url.origin;
 }
 export function structuredData(route, origin) {
- const person={'@type':'Person',name:'Samantha Ramsey',jobTitle:'Ph.D. student in Aerospace Engineering',affiliation:{'@type':'CollegeOrUniversity',name:'University of Tennessee'},sameAs:['https://github.com/samantharamsey','https://samantharamsey.github.io/tno-dynamics/']};
+ const person={'@type':'Person',name:'Samantha Ramsey',jobTitle:'Ph.D. candidate in Aerospace Engineering',affiliation:{'@type':'CollegeOrUniversity',name:'University of Tennessee'},sameAs:['https://github.com/samantharamsey','https://samantharamsey.github.io/tno-dynamics/']};
  const graph=[person,{'@type':route==='/publications'?'CollectionPage':'WebPage',name:pages[route].title,description:pages[route].description,...(origin?{url:origin+(route==='/'?'/':route)}:{}),inLanguage:'en',about:person}];
  if(route==='/publications') for(const p of publications) graph.push({'@type':'ScholarlyArticle',headline:p.title,datePublished:String(p.year),author:p.authors.map(name=>({'@type':'Person',name})),isPartOf:{'@type':'CreativeWork',name:p.venue},...(p.paperUrl?{url:p.paperUrl}:{}),...(p.pdfUrl?{encoding:{'@type':'MediaObject',contentUrl:origin&&p.pdfUrl.startsWith('/')?origin+p.pdfUrl:p.pdfUrl,encodingFormat:'application/pdf'}}:{})});
  return {'@context':'https://schema.org','@graph':graph};

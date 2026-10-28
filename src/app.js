@@ -12,7 +12,7 @@ motion.onclick=()=>setAmbient(!ambient);
 matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change',e=>{if(e.matches)setAmbient(false);});
 // Moons animate by default unless reduced motion is preferred; other demos remain opt-in.
 setAmbient(Boolean(document.querySelector('.neptune-system')) && !matchMedia('(prefers-reduced-motion: reduce)').matches);
-if(document.querySelector('.neptune-system')) import('./moons.js').then(({initMoons})=>initMoons()).catch(()=>{const button=document.querySelector('#neptune-motion');button.textContent='Reload to start Neptune animation';button.onclick=()=>location.reload();});
+if(document.querySelector('.neptune-system')) import('./moons.js').then(({initMoons})=>initMoons()).catch(()=>{document.querySelector('.moon-model-note').textContent='Triton · Proteus · Larissa · Galatea — reload to start the animation';});
 if(document.querySelector('#paper-search')) {
  const {publications,citation}=await import('./publications.js');
  const search=document.querySelector('#paper-search'),year=document.querySelector('#paper-year'),topic=document.querySelector('#paper-topic');

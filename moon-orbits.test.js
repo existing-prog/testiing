@@ -1,5 +1,5 @@
 import {test} from 'node:test';import assert from 'node:assert/strict';
-import {moonElements,orbitalPosition,positionAtDay,projectPosition,logarithmicPosition,neptuneRadiusKm,simulationDays,tritonOrbitSeconds,displayOrbitPosition} from './src/moon-orbits.js';
+import {moonElements,orbitalPosition,positionAtDay,projectPosition,logarithmicPosition,neptuneRadiusKm,displayPeriodSeconds,displayPositionAtSeconds,tritonOrbitSeconds,displayOrbitPosition} from './src/moon-orbits.js';
 const distance=p=>Math.hypot(...p);
 test('each moon reaches the physical periapsis/apoapsis and repeats after its tabulated period',()=>{
  for(const orbit of moonElements){
@@ -29,12 +29,14 @@ test('logarithmic display compresses radii while preserving direction and depth'
  for(let i=0;i<3;i++)assert.ok(Math.abs(la[i]/distance(la)-a[i]/distance(a))<1e-12);
 });
 
-test('Triton takes 15 seconds and every moon keeps its physical period ratio',()=>{
+test('logarithmic display periods retain ordering, keep Triton at 15 seconds, and close each orbit',()=>{
  assert.equal(tritonOrbitSeconds,15);
- assert.equal(simulationDays(15),moonElements[0].period);
+ assert.equal(displayPeriodSeconds(moonElements[0]),15);
+ const fastest=moonElements[3];
+ assert.ok(displayPeriodSeconds(fastest)>15*fastest.period/moonElements[0].period);
  for(const orbit of moonElements){
-  const seconds=15*orbit.period/moonElements[0].period;
-  const a=positionAtDay(orbit,0),b=positionAtDay(orbit,simulationDays(seconds));
+  const seconds=displayPeriodSeconds(orbit);
+  const a=positionAtDay(orbit,0),b=displayPositionAtSeconds(orbit,seconds);
   assert.ok(distance(a.map((value,i)=>value-b[i]))<1e-6);
   const peri=distance(displayOrbitPosition(orbit,orbitalPosition(orbit,0)));
   const apo=distance(displayOrbitPosition(orbit,orbitalPosition(orbit,Math.PI)));

@@ -258,3 +258,10 @@ footer .footer-publications { font-size:14px; color:var(--lime); }
 @media(max-width:700px){.neptune-system{height:540px;}.moon-controls{padding:12px;}.moon-controls select{font-size:11px;}.moon-controls label:first-child{flex-basis:60%;}.moon-model-details p{font-size:14px;}}
 .moon-galatea {width:4px;height:4px;background:#d5c9ba;}
 #neptune-motion {font-size:13px;min-height:42px;padding:10px 15px;}
+/* A larger, continuously playing illustration with a quiet two-line caption. */
+.hero {grid-template-columns:.95fr 1.15fr;}
+.neptune-system {height:630px;}
+.moon-controls {padding:12px 16px;border:0;background:transparent;}
+.moon-model-note {font-size:12px;line-height:1.9;text-align:center;}
+@media(max-width:1050px) and (min-width:701px){.hero {grid-template-columns:1fr 1fr;}}
+@media(max-width:700px){.neptune-system {height:490px;margin-left:-3%;margin-right:-3%;}.moon-model-note {font-size:11px;}}

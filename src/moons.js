@@ -1,22 +1,21 @@
-import {moonElements,neptuneRadiusKm,orbitalPosition,positionAtDay,projectPosition,displayOrbitPosition,simulationDays} from './moon-orbits.js';
+import {moonElements,neptuneRadiusKm,orbitalPosition,projectPosition,displayOrbitPosition,displayPositionAtSeconds} from './moon-orbits.js';
 // Two-body propagation of dated elements in one reference frame; not a live ephemeris.
 export function initMoons() {
  const scene=document.querySelector('.neptune-system'),moons=[...scene.querySelectorAll('.neptune-moon')];
  const back=[...scene.querySelectorAll('.moon-paths-back path')],front=[...scene.querySelectorAll('.moon-paths-front path')],planet=scene.querySelector('.planet');
  const atmosphere=document.createElement('canvas');atmosphere.className='neptune-atmosphere';atmosphere.setAttribute('aria-hidden','true');planet.append(atmosphere);
  const ctx=atmosphere.getContext('2d');
- const toggle=document.querySelector('#neptune-motion');
- let running=!matchMedia('(prefers-reduced-motion: reduce)').matches;
- let frame=0,last=null,time=0,days=0,visible=true,layout='',pixelsPerLogUnit=1;
+ scene.dataset.running='true';
+ let frame=0,last=null,time=0,visible=true,layout='',pixelsPerLogUnit=1;
  const samples=moonElements.map(orbit=>Array.from({length:361},(_,n)=>projectPosition(displayOrbitPosition(orbit,orbitalPosition(orbit,n*Math.PI/180)))));
  function updateLayout(){
   const key=`${scene.clientWidth}:${scene.clientHeight}`;
   if(key===layout)return;layout=key;
   const paths=samples;
   const extent=Math.max(...paths.flat().map(([x,y])=>Math.max(Math.abs(x),Math.abs(y))));
-  pixelsPerLogUnit=Math.min(scene.clientWidth*.43,scene.clientHeight*.28)/extent;
-  const cx=scene.clientWidth/2,cy=scene.clientHeight*.43;
-  planet.style.top='43%';
+  pixelsPerLogUnit=Math.min(scene.clientWidth*.47,scene.clientHeight*.36)/extent;
+  const cx=scene.clientWidth/2,cy=scene.clientHeight*.46;
+  planet.style.top='46%';
   const diameter=Math.max(12,2*Math.log(2)*pixelsPerLogUnit);
   planet.style.width=diameter+'px';planet.style.height=diameter+'px';
   scene.querySelectorAll('.moon-paths').forEach(svg=>svg.setAttribute('viewBox',`0 0 ${scene.clientWidth} ${scene.clientHeight}`));
@@ -48,26 +47,22 @@ export function initMoons() {
  }
  function render(timestamp) {
   frame=0;
-  const active=running&&!document.hidden&&visible;
-  if(active&&last!==null){const dt=Math.min((timestamp-last)/1000,.08);time+=dt;days=simulationDays(time);}
+  const active=!document.hidden&&visible;
+  if(active&&last!==null){const dt=Math.min((timestamp-last)/1000,.08);time+=dt;}
   last=active?timestamp:null;
   updateLayout();
   moons.forEach((moon,i)=>{
-   const [x,y,z]=projectPosition(displayOrbitPosition(moonElements[i],positionAtDay(moonElements[i],days)));
-   moon.style.top='43%';
+   const [x,y,z]=projectPosition(displayOrbitPosition(moonElements[i],displayPositionAtSeconds(moonElements[i],time)));
+   moon.style.top='46%';
    moon.style.transform=`translate(calc(-50% + ${x*pixelsPerLogUnit}px),calc(-50% + ${y*pixelsPerLogUnit}px))`;
    moon.style.zIndex=z>=0?'3':'1';
-   moon.hidden=Math.abs(x*pixelsPerLogUnit)>scene.clientWidth*.49||Math.abs(y*pixelsPerLogUnit)>scene.clientHeight*.4;
+   moon.hidden=false;
    moon.title=moonElements[i].name;
   });
   drawAtmosphere();
   if(active)frame=requestAnimationFrame(render);
  }
  function refresh(){if(!frame)frame=requestAnimationFrame(render);}
- function updateToggle(){toggle.textContent=running?'Pause Neptune animation':'Play Neptune animation';toggle.setAttribute('aria-pressed',String(running));scene.dataset.running=String(running);}
- toggle.onclick=()=>{running=!running;last=null;updateToggle();refresh();};
- matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change',e=>{if(e.matches){running=false;last=null;updateToggle();refresh();}});
- updateToggle();
  new ResizeObserver(refresh).observe(scene);
  new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;refresh();}).observe(scene);
  document.addEventListener('visibilitychange',refresh);refresh();
