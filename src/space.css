@@ -288,3 +288,8 @@ footer .footer-publications { font-size:14px; color:var(--lime); }
 .neptune-system .moon-controls {top:40px;bottom:auto;left:25px;right:10px;padding:0;align-items:start;}
 .neptune-system .moon-model-note {text-align:left;}
 @media(max-width:700px){.neptune-system .moon-controls{top:25px;left:0;right:0;}}
+/* One caption block beneath the animation, with matching title and scale typography. */
+.neptune-system .moon-controls {top:auto;bottom:12px;left:16px;right:16px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:0;text-align:center;}
+.neptune-system .moon-model-note {text-align:center;font-size:12px;}
+.moon-caption-kicker {font:10px/2 monospace;letter-spacing:1.4px;color:#aabbd5;}
+@media(max-width:700px){.moon-caption-kicker {font-size:9px;letter-spacing:1px;}.neptune-system .moon-model-note{font-size:11px;}}

@@ -1,17 +1,5 @@
 const printButton=document.querySelector('#print-cv');
 printButton?.addEventListener('click',()=>window.print());
-const motion=document.querySelector('#ambient-motion');
-motion.hidden=false;
-let ambient=false;
-function setAmbient(value) {
- ambient=value;document.body.classList.toggle('ambient-active',value);
- motion.setAttribute('aria-pressed',String(value));
- motion.textContent=value?'Pause ambient motion':'Play ambient motion';
-}
-motion.onclick=()=>setAmbient(!ambient);
-matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change',e=>{if(e.matches)setAmbient(false);});
-// Moons animate by default unless reduced motion is preferred; other demos remain opt-in.
-setAmbient(Boolean(document.querySelector('.neptune-system')) && !matchMedia('(prefers-reduced-motion: reduce)').matches);
 if(document.querySelector('.neptune-system')) import('./moons.js').then(({initMoons})=>initMoons()).catch(()=>{document.querySelector('.moon-model-note').textContent='Triton · Proteus · Larissa · Galatea — reload to start the animation';});
 if(document.querySelector('#paper-search')) {
  const {publications,citation}=await import('./publications.js');

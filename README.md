@@ -110,7 +110,7 @@ Each orbit uses a normalized powered-log semimajor-axis map. With a fixed physic
 
 Periods return to gentle logarithmic scaling: `15 * ln(1 + P/Pmin) / ln(1 + PTriton/Pmin)` seconds. Triton remains at 15 seconds, and the inner moons are easier to track than with cubed periods. These are deliberately distorted display distances and periods; marker sizes are enlarged.
 
-The enlarged hero has no pause button, speed controls, or on-page model-details section. Only moon names and the logarithmic scale/body-marker caption remain. The hero runs independently of the ambient-background toggle and reduced-motion preferences, as explicitly requested; rendering suspends only while the document is hidden or the illustration is offscreen, resuming when visible. Research-demo controls elsewhere are unchanged.
+The enlarged hero has no pause button, speed controls, or on-page model-details section. Only moon names and the logarithmic scale/body-marker caption remain. The header ambient-motion button is removed. The hero plays continuously, as explicitly requested; rendering suspends only while the document is hidden or the illustration is offscreen, resuming when visible. Research-demo controls elsewhere are unchanged.
 
 The static build versions JS/CSS filenames and rewrites module imports to avoid stale cached animation modules after deployment. The scholarly profile identifies Samantha Ramsey as a Ph.D. candidate in Aerospace Engineering, including visible text, CV, and JSON-LD.
 
