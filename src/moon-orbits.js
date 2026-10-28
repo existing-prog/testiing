@@ -19,3 +19,12 @@ export function orbitalPosition(orbit,mean) {
 export function positionAtDay(orbit,days){return orbitalPosition(orbit,rad(orbit.M)+2*Math.PI*days/orbit.period);}
 // Fixed observer: Ecliptic J2000 viewed after a 60-degree rotation about x.
 export function projectPosition([x,y,z]){const c=Math.cos(Math.PI/3),s=Math.sin(Math.PI/3);return [x,-(y*c-z*s),y*s+z*c];}
+
+// Radial display transform in 3D before camera projection. Physical propagation
+// remains in km; this monotonic transform preserves orbital planes and depth sign.
+export function logarithmicPosition(position) {
+ const radius=Math.hypot(...position);
+ if(radius===0)return [0,0,0];
+ const factor=Math.log1p(radius/neptuneRadiusKm)/radius;
+ return position.map(value=>value*factor);
+}

@@ -16,7 +16,7 @@ Open `http://localhost:3000` in a browser. `PORT` overrides the port. Stop with 
 npm test
 ```
 
-Twelve tests cover server-rendered content, page metadata and structured data, sitemap/robots behavior, compression, conditional caching, HTTP methods and redirects, scientific equilibrium and surface checks, and educational transfer equations.
+Thirteen tests cover server-rendered content, page metadata and structured data, sitemap/robots behavior, compression, conditional caching, HTTP methods and redirects, scientific equilibrium and surface checks, and educational transfer equations.
 
 ## Pages
 
@@ -106,4 +106,4 @@ Output is `dist/` (ignored by Git). The default target is `https://existing-prog
 
 The hero now propagates a consistent set of Ecliptic J2000 orbital elements at JD 2447763.5 (1989-08-25), transcribed from CelestiaContent `data/solarsys.ssc` and `data/minormoons.ssc`, commit `e6d05411f1ab8aecbd8d72173711ae37f228deaf`. It uses Triton’s documented elliptical fallback, not Celestia’s custom precessing model. This replaces the earlier illustrative tilts and arbitrary spacing/speeds. `src/moon-orbits.js` stores the elements and performs Keplerian propagation and three-dimensional projection.
 
-A shared linear kilometer-to-pixel scale preserves relative orbital distances in one view showing Triton, Proteus, and Larissa. Larissa replaces Nereid so all three orbits fit simultaneously; there is no inner/full-system selector. Minimum planet/moon marker sizes are disclosed. All moons share the selected days-per-second rate and retain their period ratios. Inclinations are consistently relative to the ecliptic; Triton’s retrograde geometry is not implemented by an extra sign reversal. Source values, epoch, reference frame, and limitations appear in the page’s model details. The cloud texture remains decorative; this is a dated two-body model, not a current ephemeris or precision orbit predictor.
+A logarithmic radial transform, `ln(1 + r / NeptuneRadius)`, is applied in 3D before projection in the single view showing Triton, Proteus, and Larissa. It compresses distances while preserving orbital planes and depth ordering; displayed distance ratios and orbit shapes are not physically to scale. Physical propagation and period ratios remain unchanged. Larissa replaces Nereid so all three orbits fit simultaneously; there is no inner/full-system selector. Minimum planet/moon marker sizes are disclosed. All moons share the selected days-per-second rate and retain their period ratios. Inclinations are consistently relative to the ecliptic; Triton’s retrograde geometry is not implemented by an extra sign reversal. Source values, epoch, reference frame, and limitations appear in the page’s model details. The cloud texture remains decorative; this is a dated two-body model, not a current ephemeris or precision orbit predictor.

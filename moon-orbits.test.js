@@ -1,5 +1,5 @@
 import {test} from 'node:test';import assert from 'node:assert/strict';
-import {moonElements,orbitalPosition,positionAtDay,projectPosition} from './src/moon-orbits.js';
+import {moonElements,orbitalPosition,positionAtDay,projectPosition,logarithmicPosition,neptuneRadiusKm} from './src/moon-orbits.js';
 const distance=p=>Math.hypot(...p);
 test('each moon reaches the physical periapsis/apoapsis and repeats after its tabulated period',()=>{
  for(const orbit of moonElements){
@@ -17,4 +17,14 @@ test('Triton angular momentum opposes the prograde inner moon without an artific
  const angular=moonElements.map(o=>{const a=positionAtDay(o,0),b=positionAtDay(o,.0001);return cross(a,b.map((n,i)=>n-a[i]));});
  assert.ok(angular[0].reduce((sum,n,i)=>sum+n*angular[1][i],0)<0);
  assert.ok(angular[2].reduce((sum,n,i)=>sum+n*angular[1][i],0)>0);
+});
+
+test('logarithmic display compresses radii while preserving direction and depth',()=>{
+ assert.deepEqual(logarithmicPosition([0,0,0]),[0,0,0]);
+ assert.ok(Math.abs(logarithmicPosition([neptuneRadiusKm,0,0])[0]-Math.log(2))<1e-12);
+ const a=[1e5,2e5,-3e5],b=a.map(v=>v*10);
+ const la=logarithmicPosition(a),lb=logarithmicPosition(b);
+ assert.ok(distance(lb)>distance(la)&&distance(lb)/distance(la)<10);
+ assert.ok(la[2]<0);
+ for(let i=0;i<3;i++)assert.ok(Math.abs(la[i]/distance(la)-a[i]/distance(a))<1e-12);
 });
