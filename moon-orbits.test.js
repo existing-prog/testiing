@@ -9,7 +9,8 @@ test('each moon reaches the physical periapsis/apoapsis and repeats after its ta
   assert.ok(distance(first.map((n,i)=>n-repeat[i]))<1e-6);
   assert.ok(Math.abs(distance(projectPosition(first))-distance(first))<1e-6);
  }
- assert.ok(moonElements[2].a/moonElements[1].a>46);
+ assert.deepEqual(moonElements.map(o=>o.name),['Triton','Proteus','Larissa']);
+ assert.ok(Math.max(...moonElements.map(o=>o.a*(1+o.e)))/Math.min(...moonElements.map(o=>o.a*(1-o.e)))<5);
 });
 test('Triton angular momentum opposes the prograde inner moon without an artificial time reversal',()=>{
  const cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];

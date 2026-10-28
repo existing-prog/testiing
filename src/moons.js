@@ -5,15 +5,15 @@ export function initMoons() {
  const back=[...scene.querySelectorAll('.moon-paths-back path')],front=[...scene.querySelectorAll('.moon-paths-front path')],planet=scene.querySelector('.planet');
  const atmosphere=document.createElement('canvas');atmosphere.className='neptune-atmosphere';atmosphere.setAttribute('aria-hidden','true');planet.append(atmosphere);
  const ctx=atmosphere.getContext('2d');
- const view=document.querySelector('#moon-view'),speed=document.querySelector('#moon-speed');
+ const speed=document.querySelector('#moon-speed');
  let frame=0,last=null,time=0,days=0,visible=true,layout='',pixelsPerKm=1;
  const samples=moonElements.map(orbit=>Array.from({length:361},(_,n)=>projectPosition(orbitalPosition(orbit,n*Math.PI/180))));
  function updateLayout(){
-  const key=`${scene.clientWidth}:${scene.clientHeight}:${view.value}`;
+  const key=`${scene.clientWidth}:${scene.clientHeight}`;
   if(key===layout)return;layout=key;
-  const paths=view.value==='inner'?samples.slice(0,2):samples;
+  const paths=samples;
   const extent=Math.max(...paths.flat().map(([x,y])=>Math.max(Math.abs(x),Math.abs(y))));
-  pixelsPerKm=Math.min(scene.clientWidth*.43,scene.clientHeight*.32)/extent;
+  pixelsPerKm=Math.min(scene.clientWidth*.43,scene.clientHeight*.28)/extent;
   const cx=scene.clientWidth/2,cy=scene.clientHeight*.43;
   planet.style.top='43%';
   const diameter=Math.max(12,2*neptuneRadiusKm*pixelsPerKm);
@@ -63,7 +63,6 @@ export function initMoons() {
   if(active)frame=requestAnimationFrame(render);
  }
  function refresh(){if(!frame)frame=requestAnimationFrame(render);}
- view.addEventListener('change',()=>{speed.value=view.value==='inner'?'0.1':'10';refresh();});
  new MutationObserver(refresh).observe(document.body,{attributes:true,attributeFilter:['class']});
  new ResizeObserver(refresh).observe(scene);
  new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;refresh();}).observe(scene);
