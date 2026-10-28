@@ -83,3 +83,5 @@ Zero-velocity surfaces describe energetic accessibility, not trajectories or gua
 - `src/assets/`: figures, meshes, social card, favicon, and PDF directory.
 
 Research mathematics was prerendered with KaTeX 0.19.1. Keep accessible MathML and visual HTML together when editing. See `SOURCES.md` for provenance and vendor licenses.
+
+The Neptune illustration uses soft cloud features moving across a projected spherical surface under fixed lighting, rather than artificial atmospheric stripes. Triton moves retrograde; the three moon paths have distinct illustrative projected tilts. Their orientations, distances, and animation speeds do not reproduce measured inclinations or ephemerides.
