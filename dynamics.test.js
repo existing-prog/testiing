@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { gunzipSync } from 'node:zlib';
-import { mu, L1, L2, C1, C2, potential, gradientX, sliderToC, parseBank, hohmann, eccentricAnomaly } from './src/dynamics.js';
+import { mu, L1, L2, C1, C2, potential, gradientX, sliderToC, parseBank, lagrangePoints, hohmann, eccentricAnomaly } from './src/dynamics.js';
 
 test('educational transfer geometry meets both circular orbits and Kepler time-of-flight',()=>{
  const {a,e,deltaV,periodFraction}=hohmann(1.52);
@@ -48,4 +48,15 @@ test('all 161 source frames are complete and match the nonlinear energy mapping'
   }
  }
  assert.ok(frames[80].C<C1 && frames[80].C>C2,'initial view opens L1 and closes L2');
+});
+
+test('all five illustrative Lagrange points satisfy equilibrium for the displayed mass ratio',()=>{
+ const m=.1,points=lagrangePoints(m);
+ assert.equal(points.length,5);
+ for(const {x,y} of points){
+  const r1=Math.hypot(x+m,y),r2=Math.hypot(x-1+m,y);
+  const fx=x-(1-m)*(x+m)/r1**3-m*(x-1+m)/r2**3;
+  const fy=y-(1-m)*y/r1**3-m*y/r2**3;
+  assert.ok(Math.hypot(fx,fy)<1e-12);
+ }
 });

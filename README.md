@@ -16,7 +16,7 @@ Open `http://localhost:3000` in a browser. `PORT` overrides the port. Stop with 
 npm test
 ```
 
-Eight tests cover server-rendered content, page metadata and structured data, sitemap/robots behavior, compression, conditional caching, HTTP methods and redirects, scientific equilibrium and surface checks, and educational transfer equations.
+Nine tests cover server-rendered content, page metadata and structured data, sitemap/robots behavior, compression, conditional caching, HTTP methods and redirects, scientific equilibrium and surface checks, and educational transfer equations.
 
 ## Pages
 
@@ -59,7 +59,7 @@ After deployment, verify the public origin and sitemap, then submit the sitemap 
 
 - Plotly and the compressed 161-frame mesh bank are fetched **only after clicking Load interactive 3D explorer**.
 - The canvas-demo module loads as an experiment approaches the viewport.
-- All animations start paused. Canvas loops suspend offscreen/in hidden tabs and stop scheduling frames while paused. Ambient background motion is separately opt-in. Reduced-motion preference disables decorative CSS motion and pauses running canvas demos on preference changes.
+- Teaching animations start paused. Homepage moons orbit a stationary Neptune by default unless reduced motion is requested; the motion button can pause them. Canvas loops suspend offscreen/in hidden tabs and stop scheduling frames while paused. Ambient background motion is separately opt-in. Reduced-motion preference disables decorative CSS motion and pauses running canvas demos on preference changes.
 - Journal images use WebP, responsive `srcset`/`sizes`, intrinsic dimensions, native lazy loading, and asynchronous decoding. Original PNGs remain as source assets, not the default image requests.
 - KaTeX CSS is requested only by the journal. Math fonts, plotting scripts, and content are served locally; no external fonts or tracking scripts are used.
 - Text assets use Brotli/gzip negotiation. ETags and conditional revalidation prevent redownloading unchanged resources without serving stale versionless files. Already-compressed meshes/fonts/images/PDFs are not recompressed.

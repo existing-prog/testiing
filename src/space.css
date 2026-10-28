@@ -222,3 +222,15 @@ input[type="range"]::-moz-range-thumb { width:16px; height:16px; border:2px soli
 input[type="range"]:disabled { opacity:.45; cursor:wait; }
 input[type="range"]:focus-visible { outline:2px solid #d4d0ff; outline-offset:3px; border-radius:5px; }
 @media(pointer:coarse) { input[type="range"] { height:48px; min-height:48px; } }
+/* Stationary Neptune, with moon markers but no visible orbit tracks. */
+.neptune-system { isolation:isolate; }
+.neptune-system .planet { top:48%; left:50%; transform:translate(-50%,-50%); animation:none!important; z-index:2; }
+.neptune-moon { position:absolute; left:50%; top:48%; width:7px; height:7px; border-radius:50%; background:#e2e4f0; box-shadow:0 0 12px #c6d0ff55; }
+.moon-proteus { width:5px; height:5px; background:#bac0d5; }
+.moon-nereid { width:4px; height:4px; background:#cad5e3; }
+#load-explorer { margin-bottom:28px; }
+.document-content .cv-entry { padding:30px 28px; }
+.document-content .cv-entry__header { padding:8px 14px; gap:18px 30px; }
+.document-content .cv-entry__header>.cv-date { margin-left:auto; max-width:100%; overflow-wrap:anywhere; }
+footer .footer-publications { font-size:14px; color:var(--lime); }
+@media(max-width:700px) { .document-content .cv-entry {padding:24px 18px;} .document-content .cv-entry__header {padding:8px 6px;} .document-content .cv-entry__header>.cv-date {margin-left:0;} }

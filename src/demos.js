@@ -1,4 +1,4 @@
-import { hohmann, eccentricAnomaly } from './dynamics.js';
+import { hohmann, eccentricAnomaly, lagrangePoints } from './dynamics.js';
 // A shared scheduler pauses offscreen/hidden canvases and never spins while paused.
 function canvasPlayer(canvas,draw) {
  const ctx=canvas.getContext('2d');
@@ -22,9 +22,9 @@ function canvasPlayer(canvas,draw) {
  render();
  return {render,setPlaying(value){playing=value;if(value&&visible)render();else{stop();render();}},isPlaying:()=>playing};
 }
-function dot(ctx,x,y,r,color,label) {
+function dot(ctx,x,y,r,color,label,labelY=-12) {
  ctx.fillStyle=color;ctx.shadowColor=color;ctx.shadowBlur=14;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
- if(label){ctx.font='12px system-ui';ctx.fillStyle='#c9d2ed';ctx.fillText(label,x+12,y-12);}
+ if(label){ctx.font='12px system-ui';ctx.fillStyle='#c9d2ed';ctx.fillText(label,x+12,y+labelY);}
 }
 function line(ctx,points,color='#8495c45c',dash=[]) {
  ctx.strokeStyle=color;ctx.lineWidth=1;ctx.setLineDash(dash);ctx.beginPath();points.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.stroke();ctx.setLineDash([]);
@@ -38,13 +38,15 @@ function bindToggle(player,button,label) {
 }
 export function initDemos() {
  const frameCanvas=document.querySelector('#frame-canvas'),select=document.querySelector('#reference-frame');
+ const equilibria=lagrangePoints(.1);
  const frame=canvasPlayer(frameCanvas,(ctx,w,h,t)=>{
-  const cx=w/2,cy=h/2,scale=Math.min(w,h)*.33,angle=select.value==='rotating'?0:t*.55;
+  const cx=w/2,cy=h/2,scale=Math.min(w,h)*.28,angle=select.value==='rotating'?0:t*.55;
   const project=(x,y)=>[cx+scale*(x*Math.cos(angle)-y*Math.sin(angle)),cy-scale*(x*Math.sin(angle)+y*Math.cos(angle))];
   circle(ctx,cx,cy,scale*.9,'#8394cb2e');circle(ctx,cx,cy,scale*.1,'#8394cb2e');
-  const A=project(-.1,0),B=project(.9,0),L=project(.4,Math.sqrt(3)/2);
-  line(ctx,[A,L,B,A],'#b5b6ff66',[4,5]);
-  dot(ctx,...A,9,'#f2ca87','Primary 1');dot(ctx,...B,6,'#8dacf5','Primary 2');dot(ctx,...L,4,'#d9b2ff','L₄');
+  const A=project(-.1,0),B=project(.9,0),upper=project(equilibria[3].x,equilibria[3].y),lower=project(equilibria[4].x,equilibria[4].y);
+  line(ctx,[A,upper,B,lower,A],'#b5b6ff44',[4,5]);
+  dot(ctx,...A,9,'#f2ca87','Primary 1',24);dot(ctx,...B,6,'#8dacf5','Primary 2',24);
+  for(const point of equilibria)dot(ctx,...project(point.x,point.y),4,'#d9b2ff',point.label);
   ctx.fillStyle='#d5def1';ctx.font='15px monospace';ctx.fillText('+',cx-4,cy+5);
  });
  select.onchange=()=>{document.querySelector('#frame-label').textContent=select.value==='rotating'?'Co-rotating frame':'Inertial frame';frame.render();};bindToggle(frame,document.querySelector('[data-canvas="frame-canvas"]'),'frame animation');

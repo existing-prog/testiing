@@ -3,7 +3,7 @@ import { overview, journal, simulations } from './src/views.js';
 import { publicationsPage, publications, escapeHTML } from './src/publications.js';
 const root = new URL('./src/', import.meta.url);
 export const pages = {
- '/': {title:'Samantha Ramsey | Astrodynamics & Outer Solar System Research', description:'Explore Samantha Ramsey’s research in trans-Neptunian dynamics, aerospace engineering experience, publications, and interactive orbital mechanics demonstrations.'},
+ '/': {title:'Samantha Ramsey | Astrodynamics & Celestial Mechanics Research', description:'Explore Samantha Ramsey’s research in trans-Neptunian dynamics, aerospace engineering experience, publications, and interactive orbital mechanics demonstrations.'},
  '/journal': {title:'CR3BP Research Journal | Samantha Ramsey', description:'Derivations, reference frames, Jacobi integral, zero-velocity geometry, and numerical verification for Sun–Neptune circular restricted three-body dynamics.'},
  '/simulations': {title:'Interactive Astrodynamics Simulations | Samantha Ramsey', description:'Explore Sun–Neptune zero-velocity surfaces, rotating reference frames, Hohmann transfers, and elliptical orbits with interactive scientific visualizations.'},
  '/publications': {title:'Publications & Conference Papers | Samantha Ramsey', description:'Browse Samantha Ramsey’s conference contributions on trans-Neptunian observation opportunities and Titan aerogravity-assisted Saturn capture, with citations and paper resources.'},

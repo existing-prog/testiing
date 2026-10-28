@@ -54,3 +54,16 @@ export function eccentricAnomaly(mean,e) {
  for(let i=0;i<12;i++)E-=(E-e*Math.sin(E)-mean)/(1-e*Math.cos(E));
  return E;
 }
+
+export function lagrangePoints(massRatio) {
+ if(!(massRatio>0&&massRatio<=.5))throw new RangeError('Mass ratio must be in (0, 0.5]');
+ const force=x=>x-(1-massRatio)*(x+massRatio)/Math.abs(x+massRatio)**3-massRatio*(x-1+massRatio)/Math.abs(x-1+massRatio)**3;
+ function solve(low,high){for(let i=0;i<100;i++){const mid=(low+high)/2;if(force(mid)>0)high=mid;else low=mid;}return(low+high)/2;}
+ return [
+  {label:'L₁',x:solve(-massRatio+1e-8,1-massRatio-1e-8),y:0},
+  {label:'L₂',x:solve(1-massRatio+1e-8,3),y:0},
+  {label:'L₃',x:solve(-3,-massRatio-1e-8),y:0},
+  {label:'L₄',x:.5-massRatio,y:Math.sqrt(3)/2},
+  {label:'L₅',x:.5-massRatio,y:-Math.sqrt(3)/2},
+ ];
+}
