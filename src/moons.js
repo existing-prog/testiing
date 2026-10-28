@@ -1,13 +1,14 @@
-import {moonElements,neptuneRadiusKm,orbitalPosition,positionAtDay,projectPosition,logarithmicPosition} from './moon-orbits.js';
+import {moonElements,neptuneRadiusKm,orbitalPosition,positionAtDay,projectPosition,displayOrbitPosition,simulationDays} from './moon-orbits.js';
 // Two-body propagation of dated elements in one reference frame; not a live ephemeris.
 export function initMoons() {
  const scene=document.querySelector('.neptune-system'),moons=[...scene.querySelectorAll('.neptune-moon')];
  const back=[...scene.querySelectorAll('.moon-paths-back path')],front=[...scene.querySelectorAll('.moon-paths-front path')],planet=scene.querySelector('.planet');
  const atmosphere=document.createElement('canvas');atmosphere.className='neptune-atmosphere';atmosphere.setAttribute('aria-hidden','true');planet.append(atmosphere);
  const ctx=atmosphere.getContext('2d');
- const speed=document.querySelector('#moon-speed');
+ const toggle=document.querySelector('#neptune-motion');
+ let running=!matchMedia('(prefers-reduced-motion: reduce)').matches;
  let frame=0,last=null,time=0,days=0,visible=true,layout='',pixelsPerLogUnit=1;
- const samples=moonElements.map(orbit=>Array.from({length:361},(_,n)=>projectPosition(logarithmicPosition(orbitalPosition(orbit,n*Math.PI/180)))));
+ const samples=moonElements.map(orbit=>Array.from({length:361},(_,n)=>projectPosition(displayOrbitPosition(orbit,orbitalPosition(orbit,n*Math.PI/180)))));
  function updateLayout(){
   const key=`${scene.clientWidth}:${scene.clientHeight}`;
   if(key===layout)return;layout=key;
@@ -47,12 +48,12 @@ export function initMoons() {
  }
  function render(timestamp) {
   frame=0;
-  const active=document.body.classList.contains('ambient-active')&&!document.hidden&&visible;
-  if(active&&last!==null){const dt=Math.min((timestamp-last)/1000,.08);time+=dt;days+=dt*Number(speed.value);}
+  const active=running&&!document.hidden&&visible;
+  if(active&&last!==null){const dt=Math.min((timestamp-last)/1000,.08);time+=dt;days=simulationDays(time);}
   last=active?timestamp:null;
   updateLayout();
   moons.forEach((moon,i)=>{
-   const [x,y,z]=projectPosition(logarithmicPosition(positionAtDay(moonElements[i],days)));
+   const [x,y,z]=projectPosition(displayOrbitPosition(moonElements[i],positionAtDay(moonElements[i],days)));
    moon.style.top='43%';
    moon.style.transform=`translate(calc(-50% + ${x*pixelsPerLogUnit}px),calc(-50% + ${y*pixelsPerLogUnit}px))`;
    moon.style.zIndex=z>=0?'3':'1';
@@ -63,7 +64,10 @@ export function initMoons() {
   if(active)frame=requestAnimationFrame(render);
  }
  function refresh(){if(!frame)frame=requestAnimationFrame(render);}
- new MutationObserver(refresh).observe(document.body,{attributes:true,attributeFilter:['class']});
+ function updateToggle(){toggle.textContent=running?'Pause Neptune animation':'Play Neptune animation';toggle.setAttribute('aria-pressed',String(running));scene.dataset.running=String(running);}
+ toggle.onclick=()=>{running=!running;last=null;updateToggle();refresh();};
+ matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change',e=>{if(e.matches){running=false;last=null;updateToggle();refresh();}});
+ updateToggle();
  new ResizeObserver(refresh).observe(scene);
  new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;refresh();}).observe(scene);
  document.addEventListener('visibilitychange',refresh);refresh();

@@ -1,6 +1,7 @@
 import {cp,mkdir,readFile,readdir,rm,writeFile} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import path from 'node:path';
+import {createHash} from 'node:crypto';
 import {pages,renderPage} from '../render.js';
 const project=fileURLToPath(new URL('../',import.meta.url));
 export async function buildStatic({siteUrl=process.env.PUBLIC_SITE_URL||'https://existing-prog.github.io/testiing/',outDir=path.join(project,'dist')}={}) {
@@ -14,13 +15,26 @@ export async function buildStatic({siteUrl=process.env.PUBLIC_SITE_URL||'https:/
  for(const name of await readdir(path.join(project,'src'))){
   if(['assets','vendor'].includes(name)||(/\.(css|js)$/.test(name)&&name!=='views.js'))await cp(path.join(project,'src',name),path.join(outDir,name),{recursive:true});
  }
+ const rendered=new Map();
+ const hash=createHash('sha256');
+ for(const route of Object.keys(pages)){const html=await renderPage(route,base);rendered.set(route,html);hash.update(html);}
+ const sourceNames=(await readdir(path.join(project,'src'))).filter(name=>/\.(js|css)$/.test(name)&&name!=='views.js').sort();
+ for(const name of sourceNames)hash.update(await readFile(path.join(project,'src',name)));
+ const version=hash.digest('hex').slice(0,12);
+ const manifest=Object.fromEntries(sourceNames.map(name=>[name,name.replace(/\.(js|css)$/,`.${version}.$1`)]));
+ for(const name of sourceNames){
+  let content=await readFile(path.join(project,'src',name),'utf8');
+  if(name.endsWith('.js'))content=content.replace(/(['"])(\.\/[^'"?#]+\.js)\1/g,(match,quote,specifier)=>manifest[specifier.slice(2)]?`${quote}./${manifest[specifier.slice(2)]}${quote}`:match);
+  await writeFile(path.join(outDir,manifest[name]),content);await rm(path.join(outDir,name));
+ }
+ await writeFile(path.join(outDir,'build-manifest.json'),JSON.stringify(manifest));
  function local(value){
   if(!value.startsWith('/')||value.startsWith('//'))return value;
   const match=value.match(/^([^?#]*)(.*)$/),route=match[1],suffix=match[2];
-  return prefix+(pages[route]&&route!=='/'?route+'/':route)+suffix;
+  return prefix+(manifest[route.slice(1)]?'/'+manifest[route.slice(1)]:(pages[route]&&route!=='/'?route+'/':route))+suffix;
  }
  for(const route of Object.keys(pages)){
-  let html=await renderPage(route,base);
+  let html=rendered.get(route);
   html=html.replace(/\b(href|src)="([^"]*)"/g,(_,attr,value)=>`${attr}="${local(value)}"`);
   html=html.replace(/\bsrcset="([^"]*)"/g,(_,value)=>`srcset="${value.split(',').map(item=>item.trim().replace(/^\S+/,local)).join(', ')}"`);
   if(route!=='/')html=html.replaceAll(base+route+'"',base+route+'/"');

@@ -1,5 +1,5 @@
 import {test} from 'node:test';import assert from 'node:assert/strict';
-import {moonElements,orbitalPosition,positionAtDay,projectPosition,logarithmicPosition,neptuneRadiusKm} from './src/moon-orbits.js';
+import {moonElements,orbitalPosition,positionAtDay,projectPosition,logarithmicPosition,neptuneRadiusKm,simulationDays,tritonOrbitSeconds,displayOrbitPosition} from './src/moon-orbits.js';
 const distance=p=>Math.hypot(...p);
 test('each moon reaches the physical periapsis/apoapsis and repeats after its tabulated period',()=>{
  for(const orbit of moonElements){
@@ -9,8 +9,8 @@ test('each moon reaches the physical periapsis/apoapsis and repeats after its ta
   assert.ok(distance(first.map((n,i)=>n-repeat[i]))<1e-6);
   assert.ok(Math.abs(distance(projectPosition(first))-distance(first))<1e-6);
  }
- assert.deepEqual(moonElements.map(o=>o.name),['Triton','Proteus','Larissa']);
- assert.ok(Math.max(...moonElements.map(o=>o.a*(1+o.e)))/Math.min(...moonElements.map(o=>o.a*(1-o.e)))<5);
+ assert.deepEqual(moonElements.map(o=>o.name),['Triton','Proteus','Larissa','Galatea']);
+ assert.ok(Math.max(...moonElements.map(o=>o.a*(1+o.e)))/Math.min(...moonElements.map(o=>o.a*(1-o.e)))<6);
 });
 test('Triton angular momentum opposes the prograde inner moon without an artificial time reversal',()=>{
  const cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
@@ -27,4 +27,18 @@ test('logarithmic display compresses radii while preserving direction and depth'
  assert.ok(distance(lb)>distance(la)&&distance(lb)/distance(la)<10);
  assert.ok(la[2]<0);
  for(let i=0;i<3;i++)assert.ok(Math.abs(la[i]/distance(la)-a[i]/distance(a))<1e-12);
+});
+
+test('Triton takes 15 seconds and every moon keeps its physical period ratio',()=>{
+ assert.equal(tritonOrbitSeconds,15);
+ assert.equal(simulationDays(15),moonElements[0].period);
+ for(const orbit of moonElements){
+  const seconds=15*orbit.period/moonElements[0].period;
+  const a=positionAtDay(orbit,0),b=positionAtDay(orbit,simulationDays(seconds));
+  assert.ok(distance(a.map((value,i)=>value-b[i]))<1e-6);
+  const peri=distance(displayOrbitPosition(orbit,orbitalPosition(orbit,0)));
+  const apo=distance(displayOrbitPosition(orbit,orbitalPosition(orbit,Math.PI)));
+  assert.ok(Math.abs(apo/peri-(1+orbit.e)/(1-orbit.e))<1e-12);
+  assert.ok(Math.abs((peri+apo)/2-Math.log1p(orbit.a/neptuneRadiusKm))<1e-12);
+ }
 });

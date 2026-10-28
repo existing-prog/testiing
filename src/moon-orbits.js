@@ -8,6 +8,7 @@ export const moonElements=[
  {name:'Triton',a:354759,e:.000016,i:130.909204,node:213.174202,peri:278.113474,M:349.996104,period:5.8768541},
  {name:'Proteus',a:117647,e:.00053,i:28.908433,node:48.083589,peri:81.195458,M:34.162384,period:1.12231477},
  {name:'Larissa',a:73548.26,e:.001393,i:28.693900,node:48.446761,peri:109.167352,M:310.958996,period:.55465332},
+ {name:'Galatea',a:61952.57,e:.00022,i:28.482346,node:48.730913,peri:94.040655,M:346.601960,period:.42874431},
 ];
 const rad=degrees=>degrees*Math.PI/180;
 export function orbitalPosition(orbit,mean) {
@@ -26,5 +27,13 @@ export function logarithmicPosition(position) {
  const radius=Math.hypot(...position);
  if(radius===0)return [0,0,0];
  const factor=Math.log1p(radius/neptuneRadiusKm)/radius;
+ return position.map(value=>value*factor);
+}
+
+export const tritonOrbitSeconds=15;
+export function simulationDays(seconds){return seconds*moonElements[0].period/tritonOrbitSeconds;}
+// Scale each semimajor axis logarithmically, retaining its eccentricity and plane.
+export function displayOrbitPosition(orbit,position){
+ const factor=Math.log1p(orbit.a/neptuneRadiusKm)/orbit.a;
  return position.map(value=>value*factor);
 }
