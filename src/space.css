@@ -275,3 +275,16 @@ footer .footer-publications { font-size:14px; color:var(--lime); }
 .moon-triton {background:#dfbfff;box-shadow:0 0 12px #bb88ff66;}
 .triton-legend {color:#dfbfff;}
 @media(max-width:700px){.hero h1{font-size:51px;letter-spacing:-2px;}}
+/* Matching muted marker/legend colors; legend sits just below the model title. */
+.moon-proteus {background:#9fc7e4;box-shadow:0 0 10px #9fc7e433;}
+.moon-larissa {background:#a7ccb8;box-shadow:0 0 10px #a7ccb833;}
+.moon-galatea {background:#dfbea5;box-shadow:0 0 10px #dfbea533;}
+.proteus-legend {color:#9fc7e4;}
+.larissa-legend {color:#a7ccb8;}
+.galatea-legend {color:#dfbea5;}
+.moon-paths path:nth-child(2) {stroke:#9fc7e4;}
+.moon-paths path:nth-child(3) {stroke:#a7ccb8;}
+.moon-paths path:nth-child(4) {stroke:#dfbea5;}
+.neptune-system .moon-controls {top:40px;bottom:auto;left:25px;right:10px;padding:0;align-items:start;}
+.neptune-system .moon-model-note {text-align:left;}
+@media(max-width:700px){.neptune-system .moon-controls{top:25px;left:0;right:0;}}
