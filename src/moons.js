@@ -16,7 +16,7 @@ export function initMoons() {
   pixelsPerLogUnit=Math.min(scene.clientWidth*.47,scene.clientHeight*.36)/extent;
   const cx=scene.clientWidth/2,cy=scene.clientHeight*.46;
   planet.style.top='46%';
-  const diameter=Math.max(12,2*Math.log(2)*pixelsPerLogUnit);
+  const diameter=Math.max(12,2*Math.log(2)**3*pixelsPerLogUnit);
   planet.style.width=diameter+'px';planet.style.height=diameter+'px';
   scene.querySelectorAll('.moon-paths').forEach(svg=>svg.setAttribute('viewBox',`0 0 ${scene.clientWidth} ${scene.clientHeight}`));
   samples.forEach((points,i)=>{

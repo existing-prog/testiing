@@ -31,17 +31,17 @@ export function logarithmicPosition(position) {
 }
 
 export const tritonOrbitSeconds=15;
-// Scale each semimajor axis logarithmically, retaining its eccentricity and plane.
+// Scale each semimajor axis with a cubed logarithm, retaining its eccentricity and plane.
 export function displayOrbitPosition(orbit,position){
- const factor=Math.log1p(orbit.a/neptuneRadiusKm)/orbit.a;
+ const factor=Math.log1p(orbit.a/neptuneRadiusKm)**3/orbit.a;
  return position.map(value=>value*factor);
 }
 
-// Compress period differences using the shortest moon period as the reference;
+// Cube the logarithmic period ratio using the shortest period as the reference;
 // Triton remains the 15-second anchor. These are display periods, not real-time ratios.
 export function displayPeriodSeconds(orbit){
  const reference=Math.min(...moonElements.map(moon=>moon.period));
- return tritonOrbitSeconds*Math.log1p(orbit.period/reference)/Math.log1p(moonElements[0].period/reference);
+ return tritonOrbitSeconds*(Math.log1p(orbit.period/reference)/Math.log1p(moonElements[0].period/reference))**3;
 }
 export function displayPositionAtSeconds(orbit,seconds){
  return orbitalPosition(orbit,rad(orbit.M)+2*Math.PI*seconds/displayPeriodSeconds(orbit));

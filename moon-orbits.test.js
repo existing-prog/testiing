@@ -29,18 +29,20 @@ test('logarithmic display compresses radii while preserving direction and depth'
  for(let i=0;i<3;i++)assert.ok(Math.abs(la[i]/distance(la)-a[i]/distance(a))<1e-12);
 });
 
-test('logarithmic display periods retain ordering, keep Triton at 15 seconds, and close each orbit',()=>{
+test('cubed-log display scales keep Triton at 15 seconds, preserve eccentricity and close each orbit',()=>{
  assert.equal(tritonOrbitSeconds,15);
  assert.equal(displayPeriodSeconds(moonElements[0]),15);
  const fastest=moonElements[3];
- assert.ok(displayPeriodSeconds(fastest)>15*fastest.period/moonElements[0].period);
+ assert.ok(displayPeriodSeconds(fastest)>0);
  for(const orbit of moonElements){
   const seconds=displayPeriodSeconds(orbit);
+  const reference=Math.min(...moonElements.map(m=>m.period));
+  assert.ok(Math.abs(seconds-15*(Math.log1p(orbit.period/reference)/Math.log1p(moonElements[0].period/reference))**3)<1e-12);
   const a=positionAtDay(orbit,0),b=displayPositionAtSeconds(orbit,seconds);
   assert.ok(distance(a.map((value,i)=>value-b[i]))<1e-6);
   const peri=distance(displayOrbitPosition(orbit,orbitalPosition(orbit,0)));
   const apo=distance(displayOrbitPosition(orbit,orbitalPosition(orbit,Math.PI)));
   assert.ok(Math.abs(apo/peri-(1+orbit.e)/(1-orbit.e))<1e-12);
-  assert.ok(Math.abs((peri+apo)/2-Math.log1p(orbit.a/neptuneRadiusKm))<1e-12);
+  assert.ok(Math.abs((peri+apo)/2-Math.log1p(orbit.a/neptuneRadiusKm)**3)<1e-12);
  }
 });
