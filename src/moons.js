@@ -12,7 +12,7 @@ export function initMoons() {
   const key=`${scene.clientWidth}:${scene.clientHeight}`;
   if(key===layout)return;layout=key;
   // Fixed framing: do not fit the compressed outer orbit back to the edge.
-  pixelsPerLogUnit=Math.min(scene.clientWidth*.47,scene.clientHeight*.36);
+  pixelsPerLogUnit=Math.min(scene.clientWidth*.80,scene.clientHeight*.64);
   const cx=scene.clientWidth/2,cy=scene.clientHeight*.46;
   planet.style.top='46%';
   const diameter=Math.max(12,2*displayPlanetRadius*pixelsPerLogUnit);

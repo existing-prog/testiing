@@ -55,3 +55,14 @@ test('larger compression power moves every moon inward without resizing Neptune 
  }
  assert.ok(displaySemimajorAxis(moonElements[0],3)<.65);
 });
+
+test('the camera visibly separates Triton and the inner-moon plane without changing 3D distances',()=>{
+ function majorAxis(orbit){
+  let xx=0,xy=0,yy=0;
+  for(let n=0;n<360;n++){const [x,y]=projectPosition(orbitalPosition(orbit,n*Math.PI/180));xx+=x*x;xy+=x*y;yy+=y*y;}
+  return .5*Math.atan2(2*xy,xx-yy);
+ }
+ let separation=Math.abs(majorAxis(moonElements[0])-majorAxis(moonElements[1]));
+ separation=Math.min(separation,Math.PI-separation);
+ assert.ok(separation>30*Math.PI/180);
+});

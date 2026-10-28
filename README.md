@@ -16,7 +16,7 @@ Open `http://localhost:3000` in a browser. `PORT` overrides the port. Stop with 
 npm test
 ```
 
-Fifteen tests cover server-rendered content, page metadata and structured data, sitemap/robots behavior, compression, conditional caching, HTTP methods and redirects, scientific equilibrium and surface checks, and educational transfer equations.
+Sixteen tests cover server-rendered content, page metadata and structured data, sitemap/robots behavior, compression, conditional caching, HTTP methods and redirects, scientific equilibrium and surface checks, and educational transfer equations.
 
 ## Pages
 
@@ -113,3 +113,5 @@ Periods return to gentle logarithmic scaling: `15 * ln(1 + P/Pmin) / ln(1 + PTri
 The enlarged hero has no pause button, speed controls, or on-page model-details section. Only moon names and the logarithmic scale/body-marker caption remain. The hero runs independently of the ambient-background toggle and reduced-motion preferences, as explicitly requested; rendering suspends only while the document is hidden or the illustration is offscreen, resuming when visible. Research-demo controls elsewhere are unchanged.
 
 The static build versions JS/CSS filenames and rewrites module imports to avoid stale cached animation modules after deployment. The scholarly profile identifies Samantha Ramsey as a Ph.D. candidate in Aerospace Engineering, including visible text, CV, and JSON-LD.
+
+The hero uses a closer fixed framing (world units scale to the smaller of 80% of the illustration width and 64% of its height) to show Neptune at approximately the earlier large-portrait size. Camera azimuth 68°, elevation −50°, and roll 36° separate the projected Triton/Proteus major axes by about 35.6°, without changing their orbital elements. Triton’s track and marker receive a matching violet highlight. The normalized distance map and logarithmic periods are unchanged.

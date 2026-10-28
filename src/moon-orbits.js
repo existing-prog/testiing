@@ -18,8 +18,16 @@ export function orbitalPosition(orbit,mean) {
  return [u*Math.cos(O)-v*Math.cos(i)*Math.sin(O),u*Math.sin(O)+v*Math.cos(i)*Math.cos(O),v*Math.sin(i)];
 }
 export function positionAtDay(orbit,days){return orbitalPosition(orbit,rad(orbit.M)+2*Math.PI*days/orbit.period);}
-// Fixed observer: Ecliptic J2000 viewed after a 60-degree rotation about x.
-export function projectPosition([x,y,z]){const c=Math.cos(Math.PI/3),s=Math.sin(Math.PI/3);return [x,-(y*c-z*s),y*s+z*c];}
+// Fixed observer chosen to separate Triton's projected plane from the inner moons.
+// Ecliptic J2000 azimuth 68°, elevation -50°, screen roll 36°.
+// This is a rigid camera rotation, not a change to any orbital inclination.
+export function projectPosition([x,y,z]){
+ const horizontal=-.9271838545667872*x+.3746065934159119*y;
+ const vertical=-(.28696529924198966*x+.710264039540522*y+.6427876096865393*z);
+ const depth=.24079247675463136*x+.5959822936169372*y-.766044443118978*z;
+ const c=Math.cos(Math.PI/5),s=Math.sin(Math.PI/5);
+ return [horizontal*c-vertical*s,horizontal*s+vertical*c,depth];
+}
 
 // Radial display transform in 3D before camera projection. Physical propagation
 // remains in km; this monotonic transform preserves orbital planes and depth sign.
