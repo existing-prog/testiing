@@ -18,14 +18,13 @@ export function orbitalPosition(orbit,mean) {
  return [u*Math.cos(O)-v*Math.cos(i)*Math.sin(O),u*Math.sin(O)+v*Math.cos(i)*Math.cos(O),v*Math.sin(i)];
 }
 export function positionAtDay(orbit,days){return orbitalPosition(orbit,rad(orbit.M)+2*Math.PI*days/orbit.period);}
-// Fixed observer chosen to separate Triton's projected plane from the inner moons.
-// Ecliptic J2000 azimuth 68°, elevation -50°, screen roll 36°.
-// This is a rigid camera rotation, not a change to any orbital inclination.
+// Oblique observer: Ecliptic J2000 azimuth 226°, elevation 28°, roll -45°.
+// Flatter apparent ellipses reveal depth without changing orbital inclinations.
 export function projectPosition([x,y,z]){
- const horizontal=-.9271838545667872*x+.3746065934159119*y;
- const vertical=-(.28696529924198966*x+.710264039540522*y+.6427876096865393*z);
- const depth=.24079247675463136*x+.5959822936169372*y-.766044443118978*z;
- const c=Math.cos(Math.PI/5),s=Math.sin(Math.PI/5);
+ const horizontal=.719339800338651*x-.6946583704589976*y;
+ const vertical=-(.3261223507816859*x+.33770958023907716*y+.882947592858927*z);
+ const depth=-.6133469360560766*x-.635139345156633*y+.4694715627858908*z;
+ const c=Math.SQRT1_2,s=-Math.SQRT1_2;
  return [horizontal*c-vertical*s,horizontal*s+vertical*c,depth];
 }
 

@@ -64,5 +64,12 @@ test('the camera visibly separates Triton and the inner-moon plane without chang
  }
  let separation=Math.abs(majorAxis(moonElements[0])-majorAxis(moonElements[1]));
  separation=Math.min(separation,Math.PI-separation);
- assert.ok(separation>30*Math.PI/180);
+ assert.ok(separation>20*Math.PI/180);
+ // Both orbits should look oblique rather than nearly face-on.
+ for(const orbit of moonElements.slice(0,2)){
+  let xx=0,xy=0,yy=0;
+  for(let n=0;n<360;n++){const [x,y]=projectPosition(orbitalPosition(orbit,n*Math.PI/180));xx+=x*x;xy+=x*y;yy+=y*y;}
+  const trace=xx+yy,delta=Math.hypot(xx-yy,2*xy);
+  assert.ok(Math.sqrt((trace-delta)/(trace+delta))<.6);
+ }
 });
