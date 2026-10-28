@@ -242,3 +242,17 @@ footer .footer-publications { font-size:14px; color:var(--lime); }
 .neptune-system .planet::after { display:none; }
 .neptune-atmosphere {position:absolute;inset:0;width:100%;height:100%;border-radius:50%;pointer-events:none;}
 .neptune-system .planet::before {content:'';position:absolute;inset:0;border-radius:50%;z-index:1;background:linear-gradient(105deg,transparent 25%,#040b1844 65%,#02060dcc 100%);pointer-events:none;}
+.neptune-system {height:590px;overflow:hidden;}
+.moon-controls {position:absolute;left:0;right:0;bottom:0;z-index:4;display:flex;flex-wrap:wrap;gap:10px 14px;align-items:end;background:#080b1ce8;padding:14px;border:1px solid var(--line);border-radius:6px;font-size:12px;}
+.moon-controls label {display:flex;flex-direction:column;gap:4px;flex:1;font-size:11px;color:#c2cbe0;}
+.moon-controls select {font-size:12px;padding:8px;min-height:38px;max-width:100%;}
+.moon-model-note {width:100%;font-size:10px;color:#aabbd5;line-height:1.7;}
+.moon-controls a {font-size:12px;color:var(--lime);}
+.moon-model-details {padding-top:25px;padding-bottom:25px;}
+.moon-model-details summary {cursor:pointer;color:var(--lime);font-size:16px;}
+.moon-model-details p {font-size:15px;color:var(--muted);max-width:1000px;}
+.moon-model-details a {text-decoration:underline;}
+.moon-table-wrap {overflow:auto;}
+.moon-table-wrap table {width:100%;border-collapse:collapse;font-size:14px;}
+.moon-table-wrap th,.moon-table-wrap td {padding:12px;text-align:left;border-bottom:1px solid var(--line);}
+@media(max-width:700px){.neptune-system{height:540px;}.moon-controls{padding:12px;}.moon-controls select{font-size:11px;}.moon-controls label:first-child{flex-basis:60%;}.moon-model-details p{font-size:14px;}}

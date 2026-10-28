@@ -16,7 +16,7 @@ Open `http://localhost:3000` in a browser. `PORT` overrides the port. Stop with 
 npm test
 ```
 
-Ten tests cover server-rendered content, page metadata and structured data, sitemap/robots behavior, compression, conditional caching, HTTP methods and redirects, scientific equilibrium and surface checks, and educational transfer equations.
+Twelve tests cover server-rendered content, page metadata and structured data, sitemap/robots behavior, compression, conditional caching, HTTP methods and redirects, scientific equilibrium and surface checks, and educational transfer equations.
 
 ## Pages
 
@@ -84,7 +84,7 @@ Zero-velocity surfaces describe energetic accessibility, not trajectories or gua
 
 Research mathematics was prerendered with KaTeX 0.19.1. Keep accessible MathML and visual HTML together when editing. See `SOURCES.md` for provenance and vendor licenses.
 
-The Neptune illustration uses soft cloud features moving across a projected spherical surface under fixed lighting, rather than artificial atmospheric stripes. Triton moves retrograde; the three moon paths have distinct illustrative projected tilts. Their orientations, distances, and animation speeds do not reproduce measured inclinations or ephemerides.
+The Neptune illustration uses soft cloud features moving across a projected spherical surface under fixed lighting, rather than artificial atmospheric stripes. Its moon paths now use the dated Keplerian model described below.
 
 ## GitHub Pages deployment
 
@@ -101,3 +101,9 @@ npm run build
 ```
 
 Output is `dist/` (ignored by Git). The default target is `https://existing-prog.github.io/testiing/`; `PUBLIC_SITE_URL` overrides it, including a project path or custom domain. Publish the **contents of `dist/`**, not `src/` or the repository root. A `.nojekyll` file prevents unintended Jekyll processing. GitHub Pages controls compression and cache headers in production; the Node server’s header logic is not executed there. A project-level `robots.txt` cannot set the host-wide robots policy, but the project sitemap is available at `/testiing/sitemap.xml`.
+
+## Neptune moon orbital model
+
+The hero now propagates a consistent set of Ecliptic J2000 orbital elements at JD 2447763.5 (1989-08-25), transcribed from CelestiaContent `data/solarsys.ssc`, commit `e6d05411f1ab8aecbd8d72173711ae37f228deaf`. It uses Triton’s documented elliptical fallback, not Celestia’s custom precessing model. This replaces the earlier illustrative tilts and arbitrary spacing/speeds. `src/moon-orbits.js` stores the elements and performs Keplerian propagation and three-dimensional projection.
+
+A shared linear kilometer-to-pixel scale preserves relative orbital distances. The default inner view clips Nereid; the full view shows its far larger eccentric orbit, with the inner system nearly unresolved. Minimum planet/moon marker sizes are disclosed. All moons share the selected days-per-second rate and retain their period ratios. Inclinations are consistently relative to the ecliptic; Triton’s retrograde geometry is not implemented by an extra sign reversal. Source values, epoch, reference frame, and limitations appear in the page’s model details. The cloud texture remains decorative; this is a dated two-body model, not a current ephemeris or precision orbit predictor.

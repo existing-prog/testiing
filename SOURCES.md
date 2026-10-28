@@ -26,3 +26,7 @@ Content conversion used Marked at authoring time. No conversion tools are needed
 The dedicated publications library in `src/publications.js` follows the same source bibliography. No new paper URLs, PDFs, abstracts, or DOIs have been invented. Responsive WebP derivatives of the original figures preserve the source figures and are used for delivery; original PNGs remain in the repository.
 
 The new reference-frame/L4 schematic and normalized Hohmann-transfer animation are educational illustrations authored for this portfolio. They are not additional results attributed to the source research. Their assumptions and normalized units appear alongside the controls. The nebula/starfield presentation and social-sharing card are also portfolio additions.
+
+## Neptune moon elements
+
+Factual orbital elements are transcribed from [CelestiaContent solarsys.ssc](https://github.com/CelestiaProject/CelestiaContent/blob/e6d05411f1ab8aecbd8d72173711ae37f228deaf/data/solarsys.ssc), Ecliptic J2000, epoch JD 2447763.5 (25 August 1989). The Triton elements are the source’s documented elliptical fallback; the custom precessing orbit is not included. Proteus and Nereid use the same file’s elliptical elements. NASA/JPL source pages were inaccessible from this environment, so no direct verification against their current ephemerides is claimed. The factual elements, common frame, source epoch, and propagation limits are exposed in the on-page model details.
